@@ -1,0 +1,23 @@
+{
+  "medicManagerApp": {
+    "sideEffect": {
+      "home": {
+        "title": "Side Effects",
+        "createLabel": "Create a new Side Effect",
+        "createOrEditLabel": "Create or edit a Side Effect",
+        "notFound": "No Side Effects found"
+      },
+      "created": "A new Side Effect is created with identifier {{ param }}",
+      "updated": "A Side Effect is updated with identifier {{ param }}",
+      "deleted": "A Side Effect is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Side Effect {{ id }}?"
+      },
+      "detail": {
+        "title": "Side Effect"
+      },
+      "sideEffect": "Side Effect",
+      "medicineInfo": "Medicine Info"
+    }
+  }
+}

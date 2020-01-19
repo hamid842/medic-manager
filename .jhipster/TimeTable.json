@@ -1,0 +1,32 @@
+{
+    "name": "TimeTable",
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "isTaken",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "medicineInfo",
+            "otherEntityRelationshipName": "timeTable",
+            "relationshipName": "medicineInfo",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200115124051",
+    "entityTableName": "time_table",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

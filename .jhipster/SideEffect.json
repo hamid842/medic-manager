@@ -1,0 +1,28 @@
+{
+    "name": "SideEffect",
+    "fields": [
+        {
+            "fieldName": "sideEffect",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "medicineInfo",
+            "otherEntityRelationshipName": "sideEffect",
+            "relationshipName": "medicineInfo",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200115124050",
+    "entityTableName": "side_effect",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

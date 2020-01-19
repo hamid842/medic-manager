@@ -1,0 +1,57 @@
+{
+    "name": "MedicineInfo",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "importantInfo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "usage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "initialCount",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "promised",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "refillInfo",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "pharmacyNotes",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sideEffect",
+            "otherEntityRelationshipName": "medicineInfo",
+            "relationshipName": "sideEffect"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "timeTable",
+            "otherEntityRelationshipName": "medicineInfo",
+            "relationshipName": "timeTable"
+        }
+    ],
+    "changelogDate": "20200115124049",
+    "entityTableName": "medicine_info",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

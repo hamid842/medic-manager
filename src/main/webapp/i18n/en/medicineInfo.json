@@ -1,0 +1,30 @@
+{
+  "medicManagerApp": {
+    "medicineInfo": {
+      "home": {
+        "title": "Medicine Infos",
+        "createLabel": "Create a new Medicine Info",
+        "createOrEditLabel": "Create or edit a Medicine Info",
+        "notFound": "No Medicine Infos found"
+      },
+      "created": "A new Medicine Info is created with identifier {{ param }}",
+      "updated": "A Medicine Info is updated with identifier {{ param }}",
+      "deleted": "A Medicine Info is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Medicine Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Medicine Info"
+      },
+      "name": "Name",
+      "importantInfo": "Important Info",
+      "usage": "Usage",
+      "initialCount": "Initial Count",
+      "promised": "Promised",
+      "refillInfo": "Refill Info",
+      "pharmacyNotes": "Pharmacy Notes",
+      "sideEffect": "Side Effect",
+      "timeTable": "Time Table"
+    }
+  }
+}

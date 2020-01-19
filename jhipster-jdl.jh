@@ -1,0 +1,39 @@
+
+
+entity MedicineInfo {
+	id Number,
+    name String,
+    importantInfo String,
+    usage String,
+    initialCount String,
+    promised String,
+    refillInfo Instant,
+    pharmacyNotes String
+}
+
+entity SideEffect {
+	sideEffect String
+}
+
+entity TimeTable {
+	date Instant,
+	isTaken String,
+}
+
+
+
+relationship OneToMany {
+	MedicineInfo to SideEffect,
+    MedicineInfo to TimeTable
+
+}
+
+paginate all with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+// Set an angular suffix
+// angularSuffix * with mySuffix
