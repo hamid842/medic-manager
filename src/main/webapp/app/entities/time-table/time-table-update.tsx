@@ -110,7 +110,7 @@ export const TimeTableUpdate = (props: ITimeTableUpdateProps) => {
                   {medicineInfos
                     ? medicineInfos.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.name}
                         </option>
                       ))
                     : null}

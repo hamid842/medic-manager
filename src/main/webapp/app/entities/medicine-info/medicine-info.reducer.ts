@@ -7,6 +7,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IMedicineInfo, defaultValue } from 'app/shared/model/medicine-info.model';
 
 export const ACTION_TYPES = {
+  FETCH_MEDICINEINFO_ALL: 'allMedicineInfo/FETCH_MEDICINEINFO_ALL',
   FETCH_MEDICINEINFO_LIST: 'medicineInfo/FETCH_MEDICINEINFO_LIST',
   FETCH_MEDICINEINFO: 'medicineInfo/FETCH_MEDICINEINFO',
   CREATE_MEDICINEINFO: 'medicineInfo/CREATE_MEDICINEINFO',
@@ -31,6 +32,7 @@ export type MedicineInfoState = Readonly<typeof initialState>;
 
 export default (state: MedicineInfoState = initialState, action): MedicineInfoState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.FETCH_MEDICINEINFO_ALL):
     case REQUEST(ACTION_TYPES.FETCH_MEDICINEINFO_LIST):
     case REQUEST(ACTION_TYPES.FETCH_MEDICINEINFO):
       return {
@@ -48,6 +50,7 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
         updateSuccess: false,
         updating: true
       };
+    case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO_ALL):
     case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO_LIST):
     case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO):
     case FAILURE(ACTION_TYPES.CREATE_MEDICINEINFO):
@@ -66,6 +69,12 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_MEDICINEINFO_ALL):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_MEDICINEINFO):
       return {
@@ -100,6 +109,13 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
 const apiUrl = 'api/medicine-infos';
 
 // Actions
+
+export const getAllEntities: ICrudGetAllAction<IMedicineInfo> = () => {
+  return {
+    type: ACTION_TYPES.FETCH_MEDICINEINFO_ALL,
+    payload: axios.get<IMedicineInfo>(apiUrl)
+  };
+};
 
 export const getEntities: ICrudGetAllAction<IMedicineInfo> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

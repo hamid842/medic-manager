@@ -101,7 +101,7 @@ const apiUrl = 'api/side-effects';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ISideEffect> = (page, size, sort) => {
+export const getSideEntities: ICrudGetAllAction<ISideEffect> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_SIDEEFFECT_LIST,
@@ -109,7 +109,7 @@ export const getEntities: ICrudGetAllAction<ISideEffect> = (page, size, sort) =>
   };
 };
 
-export const getEntity: ICrudGetAction<ISideEffect> = id => {
+export const getSideEntity: ICrudGetAction<ISideEffect> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_SIDEEFFECT,
@@ -122,7 +122,7 @@ export const createEntity: ICrudPutAction<ISideEffect> = entity => async dispatc
     type: ACTION_TYPES.CREATE_SIDEEFFECT,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getSideEntities());
   return result;
 };
 
@@ -131,7 +131,7 @@ export const updateEntity: ICrudPutAction<ISideEffect> = entity => async dispatc
     type: ACTION_TYPES.UPDATE_SIDEEFFECT,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getSideEntities());
   return result;
 };
 
@@ -141,7 +141,7 @@ export const deleteEntity: ICrudDeleteAction<ISideEffect> = id => async dispatch
     type: ACTION_TYPES.DELETE_SIDEEFFECT,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getSideEntities());
   return result;
 };
 

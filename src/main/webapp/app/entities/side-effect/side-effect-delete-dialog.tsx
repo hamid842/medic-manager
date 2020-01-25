@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ISideEffect } from 'app/shared/model/side-effect.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './side-effect.reducer';
+import { getSideEntity, deleteEntity } from './side-effect.reducer';
 
 export interface ISideEffectDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SideEffectDeleteDialog = (props: ISideEffectDeleteDialogProps) => {
   useEffect(() => {
-    props.getEntity(props.match.params.id);
+    props.getSideEntity(props.match.params.id);
   }, []);
 
   const handleClose = () => {
@@ -62,7 +62,7 @@ const mapStateToProps = ({ sideEffect }: IRootState) => ({
   updateSuccess: sideEffect.updateSuccess
 });
 
-const mapDispatchToProps = { getEntity, deleteEntity };
+const mapDispatchToProps = { getSideEntity, deleteEntity };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

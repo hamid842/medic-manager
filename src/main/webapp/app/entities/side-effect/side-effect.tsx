@@ -6,7 +6,7 @@ import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPa
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './side-effect.reducer';
+import { getSideEntities } from './side-effect.reducer';
 import { ISideEffect } from 'app/shared/model/side-effect.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -17,7 +17,7 @@ export const SideEffect = (props: ISideEffectProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
   const getAllEntities = () => {
-    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    props.getSideEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   useEffect(() => {
@@ -159,7 +159,7 @@ const mapStateToProps = ({ sideEffect }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getSideEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

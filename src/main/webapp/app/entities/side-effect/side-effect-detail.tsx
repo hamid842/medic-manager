@@ -6,7 +6,7 @@ import { Translate, ICrudGetAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './side-effect.reducer';
+import { getSideEntity } from './side-effect.reducer';
 import { ISideEffect } from 'app/shared/model/side-effect.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
@@ -14,7 +14,7 @@ export interface ISideEffectDetailProps extends StateProps, DispatchProps, Route
 
 export const SideEffectDetail = (props: ISideEffectDetailProps) => {
   useEffect(() => {
-    props.getEntity(props.match.params.id);
+    props.getSideEntity(props.match.params.id);
   }, []);
 
   const { sideEffectEntity } = props;
@@ -58,7 +58,7 @@ const mapStateToProps = ({ sideEffect }: IRootState) => ({
   sideEffectEntity: sideEffect.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getSideEntity };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

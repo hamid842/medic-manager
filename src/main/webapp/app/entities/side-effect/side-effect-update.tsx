@@ -9,7 +9,7 @@ import { IRootState } from 'app/shared/reducers';
 
 import { IMedicineInfo } from 'app/shared/model/medicine-info.model';
 import { getEntities as getMedicineInfos } from 'app/entities/medicine-info/medicine-info.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './side-effect.reducer';
+import { getSideEntity, updateEntity, createEntity, reset } from './side-effect.reducer';
 import { ISideEffect } from 'app/shared/model/side-effect.model';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -30,7 +30,7 @@ export const SideEffectUpdate = (props: ISideEffectUpdateProps) => {
     if (isNew) {
       props.reset();
     } else {
-      props.getEntity(props.match.params.id);
+      props.getSideEntity(props.match.params.id);
     }
 
     props.getMedicineInfos();
@@ -95,7 +95,7 @@ export const SideEffectUpdate = (props: ISideEffectUpdateProps) => {
                   {medicineInfos
                     ? medicineInfos.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.name}
                         </option>
                       ))
                     : null}
@@ -132,7 +132,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 
 const mapDispatchToProps = {
   getMedicineInfos,
-  getEntity,
+  getSideEntity,
   updateEntity,
   createEntity,
   reset
