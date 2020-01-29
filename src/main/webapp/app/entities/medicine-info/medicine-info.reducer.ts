@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, ICrudGetAllData } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -7,8 +7,8 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IMedicineInfo, defaultValue } from 'app/shared/model/medicine-info.model';
 
 export const ACTION_TYPES = {
-  FETCH_MEDICINEINFO_ALL: 'allMedicineInfo/FETCH_MEDICINEINFO_ALL',
   FETCH_MEDICINEINFO_LIST: 'medicineInfo/FETCH_MEDICINEINFO_LIST',
+  FETCH_MEDICINEINFO_ALL: 'medicineInfo/FETCH_MEDICINEINFO_ALL',
   FETCH_MEDICINEINFO: 'medicineInfo/FETCH_MEDICINEINFO',
   CREATE_MEDICINEINFO: 'medicineInfo/CREATE_MEDICINEINFO',
   UPDATE_MEDICINEINFO: 'medicineInfo/UPDATE_MEDICINEINFO',
@@ -20,6 +20,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IMedicineInfo>,
+  allEntities: [],
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -50,7 +51,6 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
         updateSuccess: false,
         updating: true
       };
-    case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO_ALL):
     case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO_LIST):
     case FAILURE(ACTION_TYPES.FETCH_MEDICINEINFO):
     case FAILURE(ACTION_TYPES.CREATE_MEDICINEINFO):
@@ -64,18 +64,15 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
         errorMessage: action.payload
       };
     case SUCCESS(ACTION_TYPES.FETCH_MEDICINEINFO_LIST):
-      return {
-        ...state,
-        loading: false,
-        entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
-      };
     case SUCCESS(ACTION_TYPES.FETCH_MEDICINEINFO_ALL):
       return {
         ...state,
         loading: false,
-        entities: action.payload.data
+        entities: action.payload.data,
+        allEntities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+
     case SUCCESS(ACTION_TYPES.FETCH_MEDICINEINFO):
       return {
         ...state,
@@ -109,14 +106,12 @@ export default (state: MedicineInfoState = initialState, action): MedicineInfoSt
 const apiUrl = 'api/medicine-infos';
 
 // Actions
-
-export const getAllEntities: ICrudGetAllAction<IMedicineInfo> = () => {
+export const getAllEntities = () => {
   return {
     type: ACTION_TYPES.FETCH_MEDICINEINFO_ALL,
     payload: axios.get<IMedicineInfo>(apiUrl)
   };
 };
-
 export const getEntities: ICrudGetAllAction<IMedicineInfo> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {

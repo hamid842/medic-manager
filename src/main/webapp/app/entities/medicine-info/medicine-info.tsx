@@ -1,47 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import ReactSearchBox from 'react-search-box';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Table } from 'reactstrap';
+import { Button, Row, Table, FormGroup, Input } from 'reactstrap';
 import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-import { getAllEntities, getEntity } from './medicine-info.reducer';
+import { getEntities, getEntity, getAllEntities } from './medicine-info.reducer';
 import { getSideEntity } from '../side-effect/side-effect.reducer';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import SelectListGroup from './selectListGriup';
+// import Select from 'react-select-search';
+// import { AllData } from './AllData';
 
 export interface IMedicineInfoProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const MedicineInfo = (props: IMedicineInfoProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
-
-  const [id1, setId] = useState();
-
+  const [query, setQuery] = useState('');
   const getAllEntities1 = () => {
-    props.getAllEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  const getOneEntity = () => {
-    props.getEntity(id1);
-  };
-  const getSideEffect = () => {
-    props.getSideEntity(id1);
-  };
-  useEffect(() => {
-    getOneEntity();
-  }, [id1]);
+  // const getOneEntity = () => {
+  //   props.getEntity(id1);
+  // };
+  // const getSideEffect = () => {
+  //   props.getSideEntity(id1);
+  // };
 
-  useEffect(() => {
-    getSideEffect();
-  }, [id1]);
+  const getAllData = () => {
+    props.getAllEntities();
+  };
+
+  // useEffect(() => {
+  //   getOneEntity();
+  // }, [id1]);
+
+  // useEffect(() => {
+  //   getSideEffect();
+  // }, [id1]);
 
   useEffect(() => {
     getAllEntities1();
   }, []);
 
+  useEffect(() => {
+    getAllData();
+  }, []);
+
   const sortEntities = () => {
-    getAllEntities();
+    getEntities();
     props.history.push(
       `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
     );
@@ -65,11 +74,22 @@ export const MedicineInfo = (props: IMedicineInfoProps) => {
       activePage: currentPage
     });
 
-  const { medicineInfoList, medicineInfoList2, medicineInfo1, match, totalItems, sideEffectEntity } = props;
+  const { list1, medicineInfoList, medicineInfo1, match, totalItems, sideEffectEntity } = props;
 
-  const selectedItem = medicineInfoList2.map(item => {
+  const selectedItem = list1.map(item => {
     return <option key={item.id}>{item.name}</option>;
   });
+  const filteredData = element => {
+    return (
+      element.name.toLowerCase().includes(query.toLowerCase()) ||
+      element.importantInfo.toLowerCase().includes(query.toLowerCase()) ||
+      element.usage.toLowerCase().includes(query.toLowerCase()) ||
+      element.initialCount.toLowerCase().includes(query.toLowerCase()) ||
+      element.promised.toLowerCase().includes(query.toLowerCase()) ||
+      element.refillInfo.toLowerCase().includes(query.toLowerCase()) ||
+      element.pharmacyNotes.toLowerCase().includes(query.toLowerCase())
+    );
+  };
 
   const optional = (
     <tbody>
@@ -132,7 +152,7 @@ export const MedicineInfo = (props: IMedicineInfoProps) => {
 
   const all = (
     <tbody>
-      {medicineInfoList.map((medicineInfo, i) => (
+      {list1.filter(filteredData).map((medicineInfo, i) => (
         <tr key={`entity-${i}`}>
           <td>
             <Button tag={Link} to={`${match.url}/${medicineInfo.id}`} color="link" size="sm">
@@ -185,9 +205,20 @@ export const MedicineInfo = (props: IMedicineInfoProps) => {
     </tbody>
   );
 
+  const handleChange = e => {
+    const value = e.target.value;
+    setQuery(prevQuery => value);
+  };
+
   return (
     <div>
-      <SelectListGroup name="select" value="" onChange={onchange} options={selectedItem} />
+      <input type="text" className="form-control" placeholder="Search for medication ..." onChange={handleChange} />
+      <FormGroup>
+        <Input type="select" name="select" id="exampleSelect" placeholder="select ...">
+          <option></option>
+          {selectedItem}
+        </Input>
+      </FormGroup>
       <h2 id="medicine-info-heading">
         <Translate contentKey="medicManagerApp.medicineInfo.home.title">Medicine Infos</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
@@ -230,7 +261,7 @@ export const MedicineInfo = (props: IMedicineInfoProps) => {
               <th />
             </tr>
           </thead>
-          {id1 === 0 || id1 === undefined || id1 === null ? all : optional}
+          {all}
         </Table>
         {/* ) : ( */}
         {/* <div className="alert alert-warning">
@@ -238,21 +269,21 @@ export const MedicineInfo = (props: IMedicineInfoProps) => {
         </div> */}
         {/* )} */}
       </div>
-      <div className={medicineInfoList && medicineInfoList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {/* <div className={medicineInfoList && medicineInfoList.length > 0 ? '' : 'd-none'}> */}
+      <Row className="justify-content-center">
+        <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+      </Row>
+      <Row className="justify-content-center">
+        <JhiPagination
+          activePage={paginationState.activePage}
+          onSelect={handlePagination}
+          maxButtons={5}
+          itemsPerPage={paginationState.itemsPerPage}
+          totalItems={props.totalItems}
+        />
+      </Row>
     </div>
+    // </div>
   );
 };
 
@@ -261,13 +292,14 @@ const mapStateToProps = ({ medicineInfo, sideEffect }: IRootState) => ({
   totalItems: medicineInfo.totalItems,
   medicineInfo1: medicineInfo.entity,
   sideEffectEntity: sideEffect.entity,
-  medicineInfoList2: medicineInfo.entities
+  list1: medicineInfo.allEntities
 });
 
 const mapDispatchToProps = {
-  getAllEntities,
+  getEntities,
   getEntity,
-  getSideEntity
+  getSideEntity,
+  getAllEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
